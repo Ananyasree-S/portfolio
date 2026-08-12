@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ananyasree S — Backend & AI Systems Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0e14;
+    --panel:#10161f;
+    --panel2:#141c27;
+    --grid:#1a222e;
+    --border:#28323f;
+    --text:#e6edf3;
+    --sub:#8b98a6;
+    --amber:#ffb454;
+    --teal:#5eead4;
+    --red:#ff6e6e;
+    --maxw:1180px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Poppins',sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  .mono{font-family:'JetBrains Mono',monospace;}
+  a{color:inherit;text-decoration:none;}
+
+  .grid-bg{
+    position:fixed; inset:0; z-index:-2;
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size:56px 56px;
+    mask-image: radial-gradient(ellipse 90% 60% at 50% 0%, #000 40%, transparent 100%);
+  }
+  .glow{
+    position:fixed; z-index:-1; border-radius:50%; filter:blur(120px); opacity:.16; pointer-events:none;
+  }
+  .glow.amber{ width:520px;height:520px; background:var(--amber); top:-120px; left:-100px;}
+  .glow.teal{ width:460px;height:460px; background:var(--teal); top:340px; right:-160px;}
+
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:20px 6vw;
+    background:rgba(10,14,20,.72);
+    backdrop-filter: blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  .logo{font-family:'JetBrains Mono',monospace; font-weight:700; font-size:16px; letter-spacing:.5px;}
+  .logo span{color:var(--amber);}
+  nav{display:flex; gap:34px;}
+  nav a{font-size:14px; color:var(--sub); font-family:'JetBrains Mono',monospace; transition:color .2s;}
+  nav a:hover{color:var(--teal);}
+  .nav-toggle{display:none;}
+
+  section{max-width:var(--maxw); margin:0 auto; padding:140px 6vw 0;}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace; color:var(--amber); font-size:14px; font-weight:700;
+    display:flex; align-items:center; gap:10px; margin-bottom:18px;
+  }
+  .eyebrow::before{content:''; width:8px;height:8px;border-radius:50%; background:var(--amber); box-shadow:0 0 12px var(--amber);}
+
+  /* HERO */
+  .hero{padding-top:190px; padding-bottom:70px;}
+  .hero h1{
+    font-size:clamp(38px,6vw,74px); font-weight:800; line-height:1.05; margin:0 0 22px; letter-spacing:-1px;
+  }
+  .hero h1 .accent{color:var(--amber);}
+  .hero p.lede{
+    max-width:640px; color:var(--sub); font-size:19px; line-height:1.7; margin-bottom:36px;
+  }
+  .hero-cta{display:flex; gap:16px; flex-wrap:wrap; margin-bottom:56px;}
+  .btn{
+    font-family:'JetBrains Mono',monospace; font-weight:700; font-size:14px; padding:14px 24px; border-radius:8px;
+    border:1px solid var(--border); transition:.2s; display:inline-flex; align-items:center; gap:8px;
+  }
+  .btn.primary{background:var(--amber); color:#0a0e14; border-color:var(--amber);}
+  .btn.primary:hover{background:#ffc576;}
+  .btn.ghost{color:var(--text); background:transparent;}
+  .btn.ghost:hover{border-color:var(--teal); color:var(--teal);}
+
+  .status-bar{
+    border:1px solid var(--border); background:var(--panel); border-radius:12px; overflow:hidden;
+  }
+  .status-bar .bar-head{
+    display:flex; align-items:center; gap:10px; padding:12px 18px; border-bottom:1px solid var(--border); background:var(--panel2);
+  }
+  .dot{width:10px;height:10px;border-radius:50%;}
+  .dot.r{background:var(--red);} .dot.a{background:var(--amber);} .dot.t{background:var(--teal);}
+  .bar-head span{font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--sub); margin-left:8px;}
+  .ticker{
+    padding:16px 18px; font-family:'JetBrains Mono',monospace; font-size:13.5px; color:var(--sub); line-height:2;
+    white-space:pre-wrap;
+  }
+  .ticker .ok{color:var(--teal);}
+  .ticker .warn{color:var(--amber);}
+  .cursor{display:inline-block; width:8px; height:14px; background:var(--teal); margin-left:2px; animation:blink 1s step-end infinite; vertical-align:middle;}
+  @keyframes blink{50%{opacity:0;}}
+
+  /* SECTION HEADS */
+  h2.sec-title{font-size:clamp(28px,4vw,40px); font-weight:700; margin:0 0 8px;}
+  .sec-desc{color:var(--sub); font-size:16px; margin-bottom:52px; max-width:600px;}
+
+  /* ABOUT */
+  .about-grid{display:grid; grid-template-columns:1.1fr .9fr; gap:60px; align-items:start; padding-bottom:90px;}
+  .about-grid p{color:var(--sub); line-height:1.9; font-size:16px; margin-bottom:16px;}
+  .stat-card{border:1px solid var(--border); background:var(--panel); border-radius:14px; padding:22px 24px; margin-bottom:14px;}
+  .stat-card .num{font-family:'JetBrains Mono',monospace; font-size:30px; font-weight:700; color:var(--teal);}
+  .stat-card .lab{color:var(--sub); font-size:13.5px; margin-top:4px;}
+
+  /* EXPERIENCE */
+  .exp{padding-bottom:100px;}
+  .exp-item{
+    border-left:2px solid var(--border); padding:0 0 40px 28px; position:relative;
+  }
+  .exp-item::before{
+    content:''; position:absolute; left:-7px; top:4px; width:12px; height:12px; border-radius:50%;
+    background:var(--bg); border:2px solid var(--amber);
+  }
+  .exp-item .role-row{display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:6px;}
+  .exp-item h3{margin:0; font-size:20px; font-weight:600;}
+  .exp-item .date{font-family:'JetBrains Mono',monospace; color:var(--amber); font-size:13px;}
+  .exp-item .company{color:var(--teal); font-family:'JetBrains Mono',monospace; font-size:13.5px; margin-bottom:14px;}
+  .exp-item ul{margin:0; padding-left:18px; color:var(--sub); line-height:1.8; font-size:15px;}
+  .exp-item li{margin-bottom:6px;}
+  .exp-item li::marker{color:var(--amber);}
+
+  /* PROJECTS */
+  .projects{padding-bottom:60px;}
+  .project{
+    display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center;
+    border:1px solid var(--border); background:var(--panel); border-radius:20px; padding:36px;
+    margin-bottom:36px;
+  }
+  .project.reverse .media{order:2;}
+  .project .media{
+    border-radius:14px; overflow:hidden; border:1px solid var(--border); background:#000; position:relative;
+  }
+  .project video{width:100%; display:block; aspect-ratio:16/9;}
+  .project .no{font-family:'JetBrains Mono',monospace; color:var(--amber); font-weight:700; font-size:14px; margin-bottom:10px;}
+  .project h3{font-size:26px; font-weight:700; margin:0 0 12px;}
+  .project p.desc{color:var(--sub); font-size:15.5px; line-height:1.8; margin-bottom:18px;}
+  .project ul.feats{list-style:none; margin:0 0 20px; padding:0;}
+  .project ul.feats li{
+    font-size:14.5px; color:var(--text); padding-left:22px; position:relative; margin-bottom:10px; line-height:1.6;
+  }
+  .project ul.feats li::before{content:'▸'; position:absolute; left:0; color:var(--teal);}
+  .chips{display:flex; flex-wrap:wrap; gap:8px;}
+  .chip{
+    font-family:'JetBrains Mono',monospace; font-size:12.5px; font-weight:600; color:var(--sub);
+    border:1px solid var(--border); padding:6px 12px; border-radius:20px; background:var(--panel2);
+  }
+
+  /* SKILLS */
+  .skills{padding-bottom:90px;}
+  .skill-groups{display:grid; grid-template-columns:repeat(2,1fr); gap:24px;}
+  .skill-card{border:1px solid var(--border); background:var(--panel); border-radius:14px; padding:24px;}
+  .skill-card h4{margin:0 0 16px; font-family:'JetBrains Mono',monospace; color:var(--teal); font-size:14px; letter-spacing:.5px;}
+  .skill-card .chips{gap:8px;}
+
+  /* CERT */
+  .cert-strip{
+    display:flex; align-items:center; gap:16px; border:1px solid var(--border); background:var(--panel);
+    border-radius:14px; padding:20px 26px; margin-bottom:90px;
+  }
+  .cert-strip .badge{
+    width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--amber),var(--teal));
+    display:flex;align-items:center;justify-content:center;font-weight:800;color:#0a0e14;font-family:'JetBrains Mono',monospace;
+  }
+  .cert-strip div h4{margin:0 0 2px; font-size:15.5px;}
+  .cert-strip div p{margin:0; color:var(--sub); font-size:13.5px;}
+
+  /* CONTACT / FOOTER */
+  footer{
+    border-top:1px solid var(--border); margin-top:40px; padding:70px 6vw 40px;
+  }
+  .contact-inner{max-width:var(--maxw); margin:0 auto; text-align:center;}
+  footer h2{font-size:clamp(30px,5vw,50px); margin:0 0 18px; font-weight:800;}
+  footer p{color:var(--sub); margin-bottom:34px; font-size:16px;}
+  .contact-links{display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin-bottom:56px;}
+  .foot-bottom{
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; color:var(--sub);
+    font-family:'JetBrains Mono',monospace; font-size:12.5px; padding-top:28px; border-top:1px solid var(--border);
+  }
+
+  .reveal{opacity:0; transform:translateY(24px); transition:opacity .7s ease, transform .7s ease;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+
+  @media(max-width:860px){
+    nav{display:none;}
+    .about-grid{grid-template-columns:1fr;}
+    .project, .project.reverse{grid-template-columns:1fr;}
+    .project.reverse .media{order:0;}
+    .skill-groups{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+<div class="glow amber"></div>
+<div class="glow teal"></div>
+
+<header>
+  <div class="logo">&gt;_ <span>ananyasree</span>.dev</div>
+  <nav>
+    <a href="#about">about</a>
+    <a href="#experience">experience</a>
+    <a href="#work">work</a>
+    <a href="#skills">skills</a>
+    <a href="#contact">contact</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="eyebrow">status: open to opportunities</div>
+  <h1>Backend &amp; AI systems engineer <span class="accent">who debugs at 2am and ships before 9.</span></h1>
+  <p class="lede">3+ years hardening distributed systems at SAP, and building generative-AI applications end to end — RAG pipelines, voice agents, tool-calling, and the infra that keeps it all under 2ms of overhead.</p>
+  <div class="hero-cta">
+    <a class="btn primary" href="#work">View projects ↓</a>
+    <a class="btn ghost" href="#contact">Get in touch</a>
+  </div>
+
+  <div class="status-bar reveal" id="statusbar">
+    <div class="bar-head">
+      <span class="dot r"></span><span class="dot a"></span><span class="dot t"></span>
+      <span>whoami --engineer</span>
+    </div>
+    <div class="ticker mono" id="tickerText"></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div class="reveal">
+      <div class="eyebrow">about</div>
+      <h2 class="sec-title">I like systems that fail loudly and get fixed fast.</h2>
+      <p>I'm an Associate Engineer on SAP Analytics Cloud, where I own root-cause analysis for production incidents across APIs and data pipelines serving thousands of users — chasing failures through Splunk, network traces, and observability tooling until the "why" is undeniable.</p>
+      <p>Outside of that, I build generative-AI systems from first principles: retrieval-augmented generation, real-time voice agents, autonomous tool-calling, and the evaluation harnesses that prove they actually work. I care as much about latency budgets and concurrency correctness as I do about the model in the loop.</p>
+      <p>BMS Institute of Technology and Management — B.Tech, Computer Science, CGPA 9.10.</p>
+    </div>
+    <div class="reveal">
+      <div class="stat-card"><div class="num">2000+</div><div class="lab">users served by production APIs I've debugged &amp; hardened at SAP</div></div>
+      <div class="stat-card"><div class="num">30%</div><div class="lab">reduction in recurring incidents through systematic root-cause analysis</div></div>
+      <div class="stat-card"><div class="num">40%</div><div class="lab">less manual configuration effort for 300+ analytics platform users</div></div>
+      <div class="stat-card"><div class="num">3</div><div class="lab">generative-AI systems shipped: RAG, voice AI, and evaluation tooling</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience" class="exp">
+  <div class="eyebrow">experience</div>
+  <h2 class="sec-title reveal">Where the debugging happens</h2>
+  <p class="sec-desc reveal">Two years deep in SAP's production systems — from intern to owning incident resolution end to end.</p>
+
+  <div class="exp-item reveal">
+    <div class="role-row"><h3>Associate Engineer — SAP Analytics Cloud</h3><span class="date">JUL 2023 — PRESENT</span></div>
+    <div class="company">SAP</div>
+    <ul>
+      <li>Built and enhanced backend services for an internal analytics platform, cutting manual configuration effort by 40% for 300+ users.</li>
+      <li>Owned end-to-end resolution of critical production failures across distributed APIs and data pipelines serving 2,000+ users — root-causing with Splunk, network traces, and observability tooling, reducing recurring incidents by 30%.</li>
+      <li>Partnered with enterprise customers and cross-functional teams to deploy AI/ML solutions for production issue triage and incident summarization.</li>
+      <li>Mentored junior engineers; documented debugging workflows, incident response practices, and onboarding checklists.</li>
+    </ul>
+  </div>
+
+  <div class="exp-item reveal" style="border-left-color:transparent; padding-bottom:0;">
+    <div class="role-row"><h3>Intern</h3><span class="date">FEB 2023 — JUL 2023</span></div>
+    <div class="company">SAP</div>
+    <ul>
+      <li>Triaged and resolved backend issues in production-scale distributed systems, contributing to root-cause analysis across large-scale APIs, data pipelines, and observability tooling.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="work" class="projects">
+  <div class="eyebrow">selected work</div>
+  <h2 class="sec-title reveal">Three systems, three constraints</h2>
+  <p class="sec-desc reveal">Offline-first retrieval, sub-second voice latency, and sub-2ms middleware overhead. Each video is a 15-second walkthrough of the problem, architecture, and results.</p>
+
+  <div class="project reveal">
+    <div class="media">
+      <video src="debugging_copilot.mp4" autoplay muted loop playsinline></video>
+    </div>
+    <div>
+      <div class="no">01 / RAG · LLM Evaluation</div>
+      <h3>AI Production Debugging Copilot</h3>
+      <p class="desc">An AI-powered debugging assistant that analyzes logs, metrics, and traces across 50+ simulated failure scenarios to assist with root-cause analysis — fully offline, running local inference.</p>
+      <ul class="feats">
+        <li>RAG pipeline over a FAISS vector store with local LLM inference via Ollama — under 10ms inference, under 1s end-to-end retrieval, entirely on CPU.</li>
+        <li>Evaluation harness with 20+ golden Q&amp;A pairs and 4 RAGAS metrics, used to iterate on prompts and chunking strategy.</li>
+      </ul>
+      <div class="chips">
+        <span class="chip">Python</span><span class="chip">FastAPI</span><span class="chip">FAISS</span>
+        <span class="chip">Ollama</span><span class="chip">Transformers</span><span class="chip">RAGAS</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="project reverse reveal">
+    <div class="media">
+      <video src="voice_sales_bot.mp4" autoplay muted loop playsinline></video>
+    </div>
+    <div>
+      <div class="no">02 / Voice AI · Tool Calling</div>
+      <h3>SupportFlow AI — Voice Sales Bot</h3>
+      <p class="desc">A real-time voice sales agent that runs natural, multi-turn discovery calls and autonomously decides when a lead is qualified.</p>
+      <ul class="feats">
+        <li>End-to-end pipeline with Faster-Whisper STT, Ollama/Gemma reasoning, and streaming TTS for natural, low-latency speech.</li>
+        <li>Autonomous tool-calling — the LLM independently scores and persists qualified leads to a CRM, with the decision step kept off the critical speech-latency path.</li>
+        <li>Every turn instrumented with granular latency metrics: STT, time-to-first-token, first-audio, and end-to-end total.</li>
+      </ul>
+      <div class="chips">
+        <span class="chip">Python</span><span class="chip">FastAPI</span><span class="chip">Faster-Whisper</span>
+        <span class="chip">Ollama · Gemma</span><span class="chip">Web Audio API</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="project reveal">
+    <div class="media">
+      <video src="rate_limiter.mp4" autoplay muted loop playsinline></video>
+    </div>
+    <div>
+      <div class="no">03 / Distributed Systems</div>
+      <h3>Distributed Rate Limiter</h3>
+      <p class="desc">A high-availability API rate-limiting service protecting shared infrastructure from unbounded traffic.</p>
+      <ul class="feats">
+        <li>Token Bucket and Sliding Window algorithms for concurrent requests, with Redis atomic Lua scripts guaranteeing correctness across hundreds of parallel requests.</li>
+        <li>FastAPI middleware adding under 2ms average overhead at ~1,000 req/sec sustained throughput, with Prometheus metrics on failed requests.</li>
+        <li>Deployed on AWS ECS and validated for correctness and throughput in a real multi-container, networked environment.</li>
+      </ul>
+      <div class="chips">
+        <span class="chip">Python</span><span class="chip">FastAPI</span><span class="chip">Redis</span>
+        <span class="chip">Prometheus</span><span class="chip">AWS ECS</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" class="skills">
+  <div class="eyebrow">skills</div>
+  <h2 class="sec-title reveal">The stack, end to end</h2>
+  <p class="sec-desc reveal">From token-bucket concurrency to token-by-token generation.</p>
+  <div class="skill-groups">
+    <div class="skill-card reveal">
+      <h4>BACKEND &amp; DISTRIBUTED SYSTEMS</h4>
+      <div class="chips">
+        <span class="chip">FastAPI</span><span class="chip">REST APIs</span><span class="chip">Redis</span>
+        <span class="chip">Concurrency</span><span class="chip">Scalability</span><span class="chip">Fault Tolerance</span>
+        <span class="chip">System Design</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <h4>GENERATIVE AI</h4>
+      <div class="chips">
+        <span class="chip">LLMs</span><span class="chip">RAG</span><span class="chip">LLM Inference &amp; Deployment</span>
+        <span class="chip">Vector Databases</span><span class="chip">Embeddings</span><span class="chip">Semantic Search</span>
+        <span class="chip">Prompt Engineering</span><span class="chip">LLM Evaluation</span><span class="chip">Voice AI</span>
+        <span class="chip">STT / TTS</span><span class="chip">LangChain</span><span class="chip">Tool Calling</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <h4>LANGUAGES &amp; CORE CS</h4>
+      <div class="chips">
+        <span class="chip">Python</span><span class="chip">SQL</span><span class="chip">Data Structures &amp; Algorithms</span>
+        <span class="chip">OOP</span><span class="chip">DBMS</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <h4>INFRASTRUCTURE &amp; TOOLS</h4>
+      <div class="chips">
+        <span class="chip">AWS (EC2, CloudWatch, ECS)</span><span class="chip">Docker</span><span class="chip">MySQL</span>
+        <span class="chip">FAISS</span><span class="chip">HuggingFace</span><span class="chip">Ollama</span>
+        <span class="chip">Prometheus</span><span class="chip">Splunk</span><span class="chip">Git</span><span class="chip">Linux</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CERT -->
+<section>
+  <div class="cert-strip reveal">
+    <div class="badge">✓</div>
+    <div>
+      <h4>Generative AI Developer Certification</h4>
+      <p>SAP</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<footer id="contact">
+  <div class="contact-inner">
+    <div class="eyebrow" style="justify-content:center;">contact</div>
+    <h2>Let's fix something<br>or build something new.</h2>
+    <p>Open to backend, distributed systems, and applied AI roles.</p>
+    <div class="contact-links">
+      <a class="btn primary" href="mailto:sreeananya33@gmail.com">Email me ↗</a>
+      <a class="btn ghost" href="tel:+919844550847">+91 98445 50847</a>
+      <a class="btn ghost" href="#">LinkedIn ↗</a>
+      <a class="btn ghost" href="#">GitHub ↗</a>
+    </div>
+    <div class="foot-bottom">
+      <span>Ananyasree S — Bangalore, India</span>
+      <span>Built with an AI-in-the-loop portfolio pipeline · 2026</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Reveal on scroll
+  const els = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+  }, {threshold:.15});
+  els.forEach(el=>io.observe(el));
+
+  // Typing ticker in hero status bar
+  const lines = [
+    ["ok","GET /api/incidents/8841 → 200 OK  latency=41ms"],
+    ["warn","RAG copilot: root cause matched — confidence 0.92"],
+    ["ok","voicebot session #204: lead scored 87, persisted to CRM"],
+    ["ok","rate-limiter: throughput 1,024 req/s · overhead 1.8ms"],
+    ["warn","on-call: 2 incidents this week, 0 recurring"],
+  ];
+  const target = document.getElementById('tickerText');
+  let li = 0;
+
+  function typeLine(){
+    if(li >= lines.length){
+      target.innerHTML += `<span class="cursor"></span>`;
+      return;
+    }
+    const [cls, text] = lines[li];
+    const prefix = cls === 'ok' ? '✓ ' : '⚠ ';
+    let i = 0;
+    const span = document.createElement('div');
+    target.appendChild(span);
+    const interval = setInterval(()=>{
+      span.innerHTML = `<span class="${cls}">${prefix}</span>` + text.slice(0,i);
+      i++;
+      if(i > text.length){
+        clearInterval(interval);
+        li++;
+        setTimeout(typeLine, 260);
+      }
+    }, 14);
+  }
+  setTimeout(typeLine, 500);
+</script>
+
+</body>
+</html>
